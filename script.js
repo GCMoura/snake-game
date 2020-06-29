@@ -21,7 +21,7 @@ function main(currentTime) { //controla a velocidade do jogo. 2 vezes por segund
 
     if(gameOver) {
         if(confirm('Você perdeu. Pressione OK para começar de novo!')){
-            window.location = '/'
+            location.reload()    
         }
         return
     } 
