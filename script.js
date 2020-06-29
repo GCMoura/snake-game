@@ -1,6 +1,6 @@
 let lastRenderTime = 0
-
-const SNAKE_SPEED = 5 //velocidade snake
+const GRID_SIZE = 21
+const SNAKE_SPEED = 4 //velocidade snake
 const snakeBody = [{ x: 11, y: 11 }] //posição inicial snake
 let newSegments = 0 //corpo snake crescendo
 
@@ -11,8 +11,6 @@ let inputDirection = { x: 0, y: 0 } //direção snake
 let lastInputDirection = { x: 0, y: 0 } //direção snake
 
 const gameBoard = document.querySelector('#game-board')
-
-const GRID_SIZE = 21
 
 let gameOver = false
 
@@ -31,18 +29,19 @@ function main(currentTime) { //controla a velocidade do jogo. 2 vezes por segund
     window.requestAnimationFrame(main)
 
     const secondsSinceLastRender = (currentTime - lastRenderTime) / 1000
+    
     if(secondsSinceLastRender < 1 / SNAKE_SPEED) return
 
     lastRenderTime = currentTime
 
     updateSnake()
     drawSnake(gameBoard)
+
     updateFood()
     drawFood(gameBoard)
+
     checkDeath()
 }
-
-window.addEventListener()
 
 window.requestAnimationFrame(main)
 
@@ -90,11 +89,17 @@ function equalPosition(pos1, pos2){ //verificando se snake comeu food
 function addSegments() {
     for (let i = 0; i < newSegments; i++) {
         snakeBody.push({ ...snakeBody[snakeBody.length - 1] }) //adiciona um corpo ao final snake
-        score += 1
-        scoreDisplay.innerHTML = score
+        addScore()
     }
-
     newSegments = 0 //só adiciona um corpo a snake
+}
+
+function addScore(){
+    score++
+    scoreDisplay.innerHTML = score
+    if(score % 10 == 0){
+        SNAKE_SPEED++
+    }
 }
 
 window.addEventListener('keydown', e => { //movimento snake
@@ -168,4 +173,34 @@ function getSnakeHead(){
 function snakeIntersection() {
     //se a snake está esbarrando nela mesmom
     return onSnake(snakeBody[0], { ignoreHead: true })
+}
+
+function showCoordinates(event) {
+    let x = event.touches[0].clientX;
+    let y = event.touches[0].clientY;
+
+    let width = window.innerWidth
+    let height = window.innerHeight
+
+    if(x > width / 2 && y > (height / 3 * 1) && y < (height / 3 * 2)){ //direita
+        if(lastInputDirection.x == 0){
+            inputDirection = { x:1, y: 0 }
+        }
+    }
+    if(x < width / 2 && y > (height / 3 * 1) && y < (height / 3 * 2)){ //esquerda
+        if(lastInputDirection.x == 0) {
+            inputDirection = { x:-1, y: 0 }
+        }
+    }
+
+    if(y < (height / 3 * 1)) { //cima
+        if(lastInputDirection.y == 0) {
+            inputDirection = { x:0, y: -1 }
+        }
+    }
+    if(y > (height / 3 * 2)) { //baixo
+        if(lastInputDirection.y == 0) {
+            inputDirection = { x:0, y: 1 }
+        }
+    }
 }
