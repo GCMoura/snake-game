@@ -48,10 +48,41 @@ body {
     background-color:  hsl(50, 100%, 50%);
     border: .25vmin solid black;
 }
+.responsive-button {
+    display: none;
+}
 
 @media( max-width: 700px){
+    body {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        margin-top: 50px;
+    }
     #game-board{
         width: 90%;
         height: 50%;
+    }
+    .responsive-button{
+        display: block;
+        width: 70%;
+        height: 30%;
+        margin-top: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    .responsive-button button{
+        background: #55a;
+        width: 100px;
+        height: 65px;
+    }
+    .responsive-button button i{
+        color: white;
+    }
+    .left-right button{
+        margin: 5px 10px;
     }
 }

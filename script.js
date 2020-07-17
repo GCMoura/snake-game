@@ -17,6 +17,34 @@ let gameOver = false
 let scoreDisplay = document.querySelector('#score')
 let score = 0
 
+let buttonResponsive = document.querySelectorAll('button')
+
+buttonResponsive.forEach(button => {
+    button.addEventListener('click', function(){responsiveMovement(button.id)})
+})
+
+function responsiveMovement(id) {
+    switch(id) {
+        case "ArrowUp":
+            if(lastInputDirection.y !== 0) break
+            inputDirection = { x:0, y: -1 }
+            break
+        case "ArrowDown":
+            if(lastInputDirection.y !== 0) break
+            inputDirection = { x:0, y: 1 }
+            break
+        case "ArrowLeft":
+            if(lastInputDirection.x !== 0) break
+            inputDirection = { x:-1, y: 0 }
+            break
+        case "ArrowRight":
+            if(lastInputDirection.x !== 0) break
+            inputDirection = { x:1, y: 0 }
+            break
+    }
+    
+}
+
 function main(currentTime) { //controla a velocidade do jogo. 2 vezes por segundo
 
     if(gameOver) {
@@ -102,7 +130,9 @@ function addScore(){
     }
 }
 
-window.addEventListener('keydown', e => { //movimento snake
+window.addEventListener('keydown', moveSnake)
+
+function moveSnake(e) {
     switch(e.key) {
         case "ArrowUp":
             if(lastInputDirection.y !== 0) break
@@ -121,7 +151,7 @@ window.addEventListener('keydown', e => { //movimento snake
             inputDirection = { x:1, y: 0 }
             break
     }
-})
+}
 
 function updateFood(){
     if(onSnake(food)){
