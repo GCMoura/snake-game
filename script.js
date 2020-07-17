@@ -19,6 +19,9 @@ let score = 0
 
 let buttonResponsive = document.querySelectorAll('button')
 
+const hitSound = new Audio('./sound/hit.mp3')
+const errorSound = new Audio('./sound/error.mp3')
+
 buttonResponsive.forEach(button => {
     button.addEventListener('click', function(){responsiveMovement(button.id)})
 })
@@ -123,6 +126,7 @@ function addSegments() {
 }
 
 function addScore(){
+    hitSound.play()
     score++
     scoreDisplay.innerHTML = score
     if(score % 10 == 0){
@@ -186,10 +190,11 @@ function randomGridPosition() {
 
 function checkDeath(){
     gameOver = outsideGrid(getSnakeHead()) || snakeIntersection()
+    if(gameOver) errorSound.play()
 }
 
 function outsideGrid(position) {
-    //verifica se a cabela snake está encostando nas bordas do tabuleiro
+    //verifica se a cabeça snake está encostando nas bordas do tabuleiro
     return (
         position.x < 1 || position.x > GRID_SIZE - 1 ||
         position.y < 1 || position.y > GRID_SIZE - 1 
